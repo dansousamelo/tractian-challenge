@@ -1,11 +1,12 @@
 import Image from "next/image";
 import MotoAnimation from "./moto-animation";
 import { useAssetStore } from "../stores/useAssetStore";
+import { isEmptyObject } from "@/types";
 
 export const DetailPanel = () => {
   const { selectedAsset } = useAssetStore();
 
-  if (!selectedAsset) {
+  if (isEmptyObject(selectedAsset)) {
     return (
       <div className="flex flex-1 items-start justify-center h-full p-4 border border-gray-300 rounded  bg-white">
         <MotoAnimation />

@@ -9,3 +9,12 @@ export type FilterControlProps = {
   handleKeyDown: (key: string) => void;
   clearSearch: () => void;
 };
+
+export function isEmptyObject(obj: unknown): obj is Record<string, never> {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    !Array.isArray(obj) &&
+    Object.keys(obj).length === 0
+  );
+}
