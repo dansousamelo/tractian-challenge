@@ -11,6 +11,13 @@ To see the application in action, visit the live site:
 
 The Tractian Challenge is a web application designed to visualize the hierarchy of a company’s assets, locations, and components using a tree structure. The solution provides a clear and intuitive interface for managing and viewing assets, along with powerful filtering options for better asset monitoring.
 
+<br/>
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/c084259c-7f43-4197-b29e-dea97f22abfa" alt="challenge" />
+  <p><em>Application in Production</em></p>
+</div
+
 ## ✨ Features
 
 - **🌳 Tree View Representation**: Displays a dynamic tree structure that organizes locations, assets, and components.
