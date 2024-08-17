@@ -5,7 +5,7 @@ import { Asset, Location } from "@/app/types";
 
 const textFilterSchema = z
   .string()
-  .min(1, "O texto de pesquisa deve conter ao menos 1 caractere")
+  .min(3, "O texto de pesquisa deve conter ao menos 1 caractere")
   .max(50, "O texto de pesquisa não pode ter mais que 50 caracteres");
 
 type FilterStore = {
@@ -21,9 +21,8 @@ type FilterStore = {
   setSearchInput: (input: string) => void;
   handleEnergyChange: () => void;
   handleAlertChange: () => void;
-  handleSearchSubmit: () => void;
-  handleInputChange: (value: string) => void;
-  handleKeyDown: (key: string) => void;
+  handleSearchSubmit: (input: string) => void;
+  handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   clearSearch: () => void;
   formattedData: () => {
     assetsFormatted: Asset[];
@@ -58,35 +57,28 @@ export const useFilterStore = create<FilterStore>((set, get) => ({
     setFilterByAlert(newValue);
   },
 
-  handleSearchSubmit: () => {
-    const { searchInput, setTextFilter, clearSearch } = get();
-    if (!searchInput.trim()) {
-      clearSearch();
+  handleSearchSubmit: (input: string) => {
+    if (!input.trim()) {
+      get().clearSearch();
       return;
     }
-    const result = textFilterSchema.safeParse(searchInput);
+    const result = textFilterSchema.safeParse(input);
     if (result.success) {
-      setTextFilter(searchInput);
+      get().setTextFilter(input);
     }
   },
 
-  handleInputChange: (value: string) => {
-    const { setSearchInput, clearSearch } = get();
-    setSearchInput(value);
-    if (!value.trim()) {
-      clearSearch();
-    }
-  },
-
-  handleKeyDown: (key: string) => {
-    if (key === "Enter") {
-      get().handleSearchSubmit();
+  handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      get().handleSearchSubmit(get().searchInput);
     }
   },
 
   clearSearch: () => {
     set({ searchInput: "" });
+    set({ textFilter: "" });
     get().setTextFilter("");
+    get().setSearchInput("");
   },
 
   formattedData: () => {

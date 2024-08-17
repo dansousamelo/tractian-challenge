@@ -1,30 +1,32 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import { useFilterStore } from "../stores/useFilterStore";
 
 interface SearchInputProps {
-  value: string;
-  onChange: (e: any) => void;
-  onSubmit: () => void;
-  onClear: () => void;
   placeholder?: string;
   className?: string;
 }
 
 export function SearchInput({
-  value,
-  onChange,
-  onSubmit,
-  onClear,
   placeholder = "Buscar...",
   className = "",
 }: SearchInputProps) {
+  const { handleSearchSubmit, clearSearch } = useFilterStore();
+  const [localInput, setLocalInput] = useState("");
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
+    if (e.target.value === "") {
+      setLocalInput(e.target.value);
+      handleSearchSubmit("");
+      return;
+    }
+
+    setLocalInput(e.target.value);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      onSubmit();
+      handleSearchSubmit(localInput);
     }
   };
 
@@ -34,12 +36,18 @@ export function SearchInput({
         type="text"
         placeholder={placeholder}
         className="w-full border rounded-b-none border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
-        value={value}
+        value={localInput}
         onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
+        onKeyDown={handleKeyPress}
       />
-      {value ? (
-        <button onClick={onClear} className="absolute right-2 top-2">
+      {localInput ? (
+        <button
+          onClick={() => {
+            clearSearch();
+            setLocalInput("");
+          }}
+          className="absolute right-2 top-2"
+        >
           <Image
             src="/assets/icons/close-icon.svg"
             alt="Close icon"
@@ -49,7 +57,10 @@ export function SearchInput({
           />
         </button>
       ) : (
-        <button onClick={onSubmit} className="absolute right-2 top-2">
+        <button
+          onClick={() => handleSearchSubmit(localInput)}
+          className="absolute right-2 top-2"
+        >
           <Image
             src="/assets/icons/search-icon.svg"
             alt="Search icon"

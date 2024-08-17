@@ -1,13 +1,11 @@
 import Image from "next/image";
-import { Asset } from "@/app/types";
 import MotoAnimation from "./moto-animation";
+import { useAssetStore } from "../stores/useAssetStore";
 
-type DetailPanelProps = {
-  asset: Asset | null;
-};
+export const DetailPanel = () => {
+  const { selectedAsset } = useAssetStore();
 
-export const DetailPanel = ({ asset }: DetailPanelProps) => {
-  if (!asset) {
+  if (!selectedAsset) {
     return (
       <div className="flex flex-1 items-start justify-center h-full p-4 border border-gray-300 rounded  bg-white">
         <MotoAnimation />
@@ -16,10 +14,10 @@ export const DetailPanel = ({ asset }: DetailPanelProps) => {
   }
 
   return (
-    <div className="p-4 border border-gray-300 rounded  bg-white">
+    <div className="p-4 border border-gray-300 rounded  bg-white h-full">
       <h2 className="text-2xl font-bold flex items-center">
-        {asset.name}
-        {asset.status === "operating" && (
+        {selectedAsset.name}
+        {selectedAsset.status === "operating" && (
           <Image
             src="/assets/icons/bolt-icon.svg"
             alt="Close icon"
@@ -28,7 +26,7 @@ export const DetailPanel = ({ asset }: DetailPanelProps) => {
             className="ml-2"
           />
         )}
-        {asset.status === "alert" && (
+        {selectedAsset.status === "alert" && (
           <span className="ml-2 text-red-500">●</span>
         )}
       </h2>
@@ -36,7 +34,7 @@ export const DetailPanel = ({ asset }: DetailPanelProps) => {
       <div className="mt-4 flex">
         <Image
           src="/assets/images/gereric.webp"
-          alt={asset.name}
+          alt={selectedAsset.name}
           width={336}
           height={226}
           className="rounded-lg"
@@ -54,9 +52,11 @@ export const DetailPanel = ({ asset }: DetailPanelProps) => {
           <div className="pt-6">
             <p className="text-gray-600 font-semibold mb-2">Responsáveis</p>
             <div className="flex items-center">
-              <Badge letter={asset.sensorType == "energy" ? "E" : "M"} />
+              <Badge
+                letter={selectedAsset.sensorType == "energy" ? "E" : "M"}
+              />
               <p className="text-gray-400">
-                {asset.sensorType == "energy" ? "Elétrica" : "Mecânica"}
+                {selectedAsset.sensorType == "energy" ? "Elétrica" : "Mecânica"}
               </p>{" "}
             </div>
           </div>
@@ -75,7 +75,7 @@ export const DetailPanel = ({ asset }: DetailPanelProps) => {
               height={20}
               className="mr-1"
             />
-            <p className="text-gray-400">{asset.sensorId || "N/A"}</p>
+            <p className="text-gray-400">{selectedAsset.sensorId || "N/A"}</p>
           </div>
         </div>
         <div className="pt-6">

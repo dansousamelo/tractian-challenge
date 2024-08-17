@@ -1,42 +1,37 @@
-import { Asset, Location } from "@/app/types";
+"use client";
+
+import { memo } from "react";
+import { Asset } from "@/app/types";
 import { useExpandedNodes } from "../hooks/useExpandedNodes";
 import { useTreeRendering } from "../hooks/useTreeRendering";
+import { useAssetStore } from "../stores/useAssetStore";
+import { useFilterStore } from "../stores/useFilterStore";
 
-type TreeViewProps = {
-  locations: Location[];
-  assets: Asset[];
-  onSelectItem: (item: Asset | Location) => void;
-  textFilter: string;
-  filterByEnergy: boolean;
-  filterByAlert: boolean;
-  selectedAssetId: string | null;
-};
+const TreeViewComponent = () => {
+  const { selectedAsset, setSelectedAsset } = useAssetStore();
+  const { textFilter, filterByEnergy, filterByAlert, formattedData } =
+    useFilterStore();
 
-export const TreeView = ({
-  locations,
-  assets,
-  onSelectItem,
-  textFilter,
-  filterByEnergy,
-  filterByAlert,
-  selectedAssetId,
-}: TreeViewProps) => {
+  const handleSelectItem = (item: Asset) => {
+    setSelectedAsset(item);
+  };
+
   const { allExpandedNodes, toggleNode } = useExpandedNodes(
     textFilter,
     filterByEnergy,
     filterByAlert,
-    locations,
-    assets
+    formattedData().locationFormatted,
+    formattedData().assetsFormatted
   );
 
   const { renderTree } = useTreeRendering(
-    locations,
-    assets,
+    formattedData().locationFormatted,
+    formattedData().assetsFormatted,
     allExpandedNodes,
     toggleNode,
-    onSelectItem,
+    handleSelectItem,
     textFilter,
-    selectedAssetId
+    selectedAsset?.id || ""
   );
 
   return (
@@ -45,3 +40,5 @@ export const TreeView = ({
     </div>
   );
 };
+
+export const TreeView = memo(TreeViewComponent);
