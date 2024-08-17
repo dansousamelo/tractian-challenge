@@ -1,16 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCompanyStore } from "../stores/useCompanyStore";
-import { Asset } from "@/app/types";
-import { useAssetStore } from "../stores/useAssetStore";
+import { useFilterStore } from "../stores/useFilterStore";
 
 const Header = () => {
   const { companies, companyId } = useCompanyStore();
-  const { setSelectedAsset } = useAssetStore();
-
-  const handleSelectItem = () => {
-    setSelectedAsset({} as Asset);
-  };
+  const { resetFilterOptions } = useFilterStore();
 
   return (
     <header className="flex flex-col md:flex-row justify-between items-center px-6 py-4 bg-blue-darkest-tractian text-white">
@@ -26,7 +21,7 @@ const Header = () => {
           return (
             <Link key={company.id} href={`/companies/${company.id}`} passHref>
               <button
-                onClick={handleSelectItem}
+                onClick={resetFilterOptions}
                 className={`flex items-center px-4 py-2 rounded transition text-sm md:text-base ${
                   companyId === company.id
                     ? "bg-blue-tractian"

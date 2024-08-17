@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { z } from "zod";
 import { useCompanyStore } from "./useCompanyStore";
 import { Asset, Location } from "@/app/types";
+import { useAssetStore } from "./useAssetStore";
 
 const textFilterSchema = z
   .string()
@@ -24,6 +25,7 @@ type FilterStore = {
   handleSearchSubmit: (input: string) => void;
   handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   clearSearch: () => void;
+  resetFilterOptions: () => void;
   formattedData: () => {
     assetsFormatted: Asset[];
     locationFormatted: Location[];
@@ -79,6 +81,23 @@ export const useFilterStore = create<FilterStore>((set, get) => ({
     set({ textFilter: "" });
     get().setTextFilter("");
     get().setSearchInput("");
+  },
+
+  resetFilterOptions: () => {
+    const clearSelectedAsset = useAssetStore.getState().clearSelectedAsset;
+
+    set({
+      filterByEnergy: false,
+      filterByAlert: false,
+      energyChecked: false,
+      alertChecked: false,
+      searchInput: "",
+      textFilter: "",
+    });
+
+    get().setTextFilter("");
+    get().setSearchInput("");
+    clearSelectedAsset();
   },
 
   formattedData: () => {
