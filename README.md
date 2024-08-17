@@ -18,6 +18,8 @@ The Tractian Challenge is a web application designed to visualize the hierarchy 
   <p><em>Application in Production</em></p>
 </div
 
+---
+
 ## ✨ Features
 
 - **🌳 Tree View Representation**: Displays a dynamic tree structure that organizes locations, assets, and components.
@@ -25,7 +27,26 @@ The Tractian Challenge is a web application designed to visualize the hierarchy 
   - **📝 Text Search**: Allows users to search specific locations, assets, or components.
   - **⚡ Energy Sensors**: Isolates assets with energy sensors within the tree.
   - **🚨 Critical Sensor Status**: Highlights assets with critical alerts.
-- **💻 Responsive and Optimized UI**: Performance-optimized tree rendering and smooth user interactions.
+
+## ➕ Extra Features
+
+- **🌳 Animations in UI**:
+  Implement animations to guide user focus, improve navigation, and handle complex interactions. Libraries like `framer-motion` or CSS animations are used for smooth transitions.
+
+- **🔍 Performance**:
+  Optimizing performance with these techniques:
+
+  - **📝 `memo`, `useMemo`, `useCallback`**:
+
+    - `memo`: Prevents unnecessary re-renders if props haven’t changed.
+    - `useMemo`: Caches expensive calculations based on dependencies.
+    - `useCallback`: Caches functions to avoid re-creation on each render.
+
+  - **⚡ Server Components**:
+    Server components in Next.js handle data fetching and rendering on the server, reducing client-side load and improving performance.
+
+  - **🚨 Zustand**:
+    Lightweight state management with minimal API, avoiding unnecessary re-renders and providing fine-grained control over updates.
 
 ## 📂 Project Structure
 
@@ -116,8 +137,6 @@ Given more time, I would focus on:
 ## 🎨 Design
 
 [View the Figma Design](https://www.figma.com/file/F52Yv8RmGoGOYcV9CiuIZ1/%5BCareers%5D-Frontend-Challenge-v2?type=design&node-id=0-1&mode=design&t=r3n2A4W0ZFUwVjAs-0)
-
-<!-- Include a video demo of the application if available -->
 
 ## License
 
